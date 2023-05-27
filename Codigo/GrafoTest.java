@@ -119,4 +119,33 @@ public class GrafoTest {
     Grafo subgrafo = grafo.subGrafo(vertices);
     assertNotNull(subgrafo.existeAresta(1, 2));
   }
+
+  @Test
+  public void PesquisaEmProfundidade() {
+    Grafo grafo = new Grafo("");
+    Lista<Integer> vertices = new Lista<Integer>();
+    for (int i = 0; i <= 10; i++) {
+      grafo.addVertice(i);
+      vertices.add(i);
+    }
+    for (int j = 0; j <= 10; j++) {
+      grafo.addAresta(j, j + 1);
+    }
+    Grafo subgrafo = grafo.subGrafo(vertices);
+    assertNotNull(subgrafo.existeAresta(1, 2));
+  }
+  @Test
+  public void PesquisaEmLargura() {
+    Grafo grafo = new Grafo("");
+    Lista<Integer> vertices = new Lista<Integer>();
+    for (int i = 0; i <= 10; i++) {
+      grafo.addVertice(i);
+      vertices.add(i);
+    }
+    for (int j = 0; j <= 10; j++) {
+      grafo.addAresta(j, j + 1);
+    }
+    Grafo subgrafo = grafo.subGrafo(vertices);
+    assertNotNull(subgrafo.existeAresta(1, 2));
+  }
 }
