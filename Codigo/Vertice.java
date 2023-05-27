@@ -50,6 +50,10 @@ public class Vertice {
         return this.id;
     }
 
+    // *Para a adição de arestas, temos de pensar uma maneira, pois de acordo com a
+    // *regra o vertice(cidade)so pode fazer ligações com as quatro cidades mais
+    // *proximas a ele*/
+
     /**
      * Retorna a lista de arestas
      * 
@@ -59,11 +63,16 @@ public class Vertice {
         return this.arestas;
     }
 
+    // *Para este metodo de adição de arestas, precisamos criar um codigo que
+    // *calcule a distancia usando as diferenças entre latitudes e longitudes, que
+    // *seram os dados disponibilizados no arquivo para calculo do grafo*/
+
     /**
      * Adiciona uma aresta ponderada neste vértice para um destino
      * 
-     * @param peso Peso da aresta
-     * @param dest Vértice de destino
+     * @param peso Peso da aresta, neste caso sendo referente a distancia entre as
+     *             cidades
+     * @param dest Vértice de destino, cidades vizinhas
      * @return TRUE se foi inserida, FALSE caso já existisse e não foi inserida.
      */
     public boolean addAresta(int destino, int peso) {
