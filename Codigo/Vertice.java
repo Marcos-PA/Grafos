@@ -75,7 +75,7 @@ public class Vertice {
      * @param dest Vértice de destino, cidades vizinhas
      * @return TRUE se foi inserida, FALSE caso já existisse e não foi inserida.
      */
-    public boolean addAresta(int destino, int peso) {
+    public boolean addAresta(int destino, double peso) {
         return this.arestas.add(destino, new Aresta(peso, destino));
     }
 

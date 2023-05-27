@@ -220,11 +220,11 @@ public class Grafo {
      * @param peso    Peso da aresta
      * @return TRUE se foi inserida, FALSE caso contrário
      */
-    public boolean addAresta(int origem, int destino, int peso) {
+    public boolean addAresta(int origem, int destino, double peso) {
         return adicionarAresta(origem, destino, peso);
     }
 
-    private boolean adicionarAresta(int origem, int destino, int peso) {
+    private boolean adicionarAresta(int origem, int destino, double peso) {
         boolean adicionou = false;
         Vertice saida = this.existeVertice(origem);
         Vertice chegada = this.existeVertice(destino);

@@ -25,17 +25,17 @@ package Codigo;
 
 public class Aresta {
 
-    private int peso;
+    private double peso;
     private int destino;
     private boolean visitada;
 
     /**
      * Construtor para arestas com peso. A aresta é criada como não-visitada.
-     * @param peso Peso da aresta
+     * @param peso2 Peso da aresta
      * @param dest Vértice de destino
      */
-    public Aresta(int peso, int destino){
-        init(peso, destino);
+    public Aresta(double peso2, int destino){
+        init(peso2, destino);
     }
 
        /**
@@ -46,8 +46,8 @@ public class Aresta {
         init(-1, destino);
     }
 
-    private void init(int peso, int destino){
-        this.peso = peso;
+    private void init(double peso2, int destino){
+        this.peso = peso2;
         this.destino = destino;
         this.visitada = false;
     }
@@ -56,7 +56,7 @@ public class Aresta {
      * Método de acesso para o peso da aresta
      * @return Peso da aresta (int)
      */
-    public int peso() {
+    public double peso() {
         return this.peso;
     }
    
