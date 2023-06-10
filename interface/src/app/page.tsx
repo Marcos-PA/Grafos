@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import {Button, Divider, Grid, Typography} from '@mui/material'
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-import { FaPlusSquare } from 'react-icons/fa'
+import { FaSlidersH, FaInfo } from 'react-icons/fa'
 const VisNetwork = dynamic(() => import('react-vis-network-graph'), { ssr: false });
 
 interface nodeGraph {
@@ -136,8 +136,16 @@ export default function Home() {
   return (
     <Grid className="main" sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       <Grid item md={12} sx={{textAlign:'center'}}>
-        <Typography fontSize={28} sx={{mt:2}}>Visualização do grafo</Typography>
-        <Button color='info' variant='outlined' sx={{my:2}} startIcon={<FaPlusSquare/>} fullWidth>Manipular Grafo</Button>
+        <Typography fontSize={28} sx={{mt:2}}>Virtualização Do Grafo</Typography>
+        <Divider color='white'/>
+        <Grid container spacing={3}>
+          <Grid item md={6}>
+            <Button color='info' variant='outlined' sx={{my:2}} startIcon={<FaSlidersH/>} fullWidth>Manipular Grafo</Button>
+          </Grid>
+          <Grid item md={6}>
+            <Button color='warning' variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
+          </Grid>
+        </Grid>
         <Box border={2}>
           <VisNetwork    
             graph={graph}
