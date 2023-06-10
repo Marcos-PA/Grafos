@@ -87,14 +87,20 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+    background-image: url('https://img.freepik.com/fotos-gratis/fundo-de-papel-de-parede-colorido-embacado-artistico_58702-8287.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    
 }
-
+canvas{
+  background-color: rgba(1, 4, 54, 0.397);
+}
 a {
   color: inherit;
   text-decoration: none;
