@@ -192,8 +192,32 @@ public class GrafoTest {
     int vertice2 = vizinhos.get(0).get(1);
     int vertice3 = vizinhos.get(0).get(2);
 
+    int vertice4 = vizinhos.get(1).get(0);
+    int vertice5 = vizinhos.get(1).get(1);
+    int vertice6 = vizinhos.get(1).get(2);
+
+    int vertice7 = vizinhos.get(2).get(0);
+    int vertice8 = vizinhos.get(2).get(1);
+    int vertice9 = vizinhos.get(2).get(2);
+
+    int vertice10 = vizinhos.get(3).get(0);
+    int vertice11 = vizinhos.get(3).get(1);
+    int vertice12 = vizinhos.get(3).get(2);
+
     assertEquals(1, vertice1);
     assertEquals(2, vertice2);
     assertEquals(3, vertice3);
+
+    assertEquals(0, vertice4);
+    assertEquals(2, vertice5);
+    assertEquals(3, vertice6);
+
+    assertEquals(0, vertice7);
+    assertEquals(1, vertice8);
+    assertEquals(3, vertice9);
+
+    assertEquals(0, vertice10);
+    assertEquals(1, vertice11);
+    assertEquals(2, vertice12);
   }
 }
