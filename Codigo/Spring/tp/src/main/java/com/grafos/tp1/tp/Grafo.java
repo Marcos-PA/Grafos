@@ -426,4 +426,12 @@ public class Grafo {
         return minIndex;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public ABB<Vertice> getVertices() {
+        return vertices;
+    }
+
 }
