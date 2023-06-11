@@ -404,4 +404,68 @@ public class Grafo {
         return visitados;
     }
 
+    public Grafo arvoreGeradoraMinima() {
+        Grafo arvore = new Grafo("Árvore Geradora Mínima de " + this.nome);
+        int[] vertices = new int[this.vertices.size()];
+        int[] pesos = new int[this.vertices.size()];
+        int[] antecessores = new int[this.vertices.size()];
+        int[] visitados = new int[this.vertices.size()];
+        int i = 0;
+
+        for (Vertice vertice : this.vertices.allElements(new Vertice[this.vertices.size()])) {
+            vertices[i] = vertice.getId();
+            pesos[i] = Integer.MAX_VALUE;
+            antecessores[i] = -1;
+            visitados[i] = 0;
+            i++;
+        }
+
+        pesos[0] = 0;
+
+        for (int j = 0; j < this.vertices.size(); j++) {
+            int u = minimo(vertices, pesos, visitados);
+            visitados[u] = 1;
+
+            if (antecessores[u] != -1) {
+                arvore.addAresta(antecessores[u], u, pesos[u]);
+            }
+
+            Vertice vertice = this.vertices.find(u);
+            if (vertice != null) {
+                for (Aresta aresta : vertice.getArestas().allElements(new Aresta[vertice.getArestas().size()])) {
+                    int v = aresta.destino();
+                    if (visitados[v] == 0 && aresta.peso() < pesos[v]) {
+                        antecessores[v] = u;
+                        pesos[v] = (int) aresta.peso();
+                    }
+                }
+            }
+        }
+
+        return arvore;
+    }
+
+    private void imprime() {
+        System.out.println("Árvore Geradora Mínima de " + this.nome);
+        for (Vertice vertice : this.vertices.allElements(new Vertice[this.vertices.size()])) {
+            for (Aresta aresta : vertice.getArestas().allElements(new Aresta[vertice.getArestas().size()])) {
+                System.out.println(vertice.getId() + " - " + aresta.destino() + " (" + aresta.peso() + ")");
+            }
+        }
+    }
+
+    private int minimo(int[] vertices2, int[] pesos, int[] visitados) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = -1;
+
+        for (int i = 0; i < this.vertices.size(); i++) {
+            if (visitados[i] == 0 && pesos[i] < min) {
+                min = pesos[i];
+                minIndex = i;
+            }
+        }
+
+        return minIndex;
+    }
+
 }
