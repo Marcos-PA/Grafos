@@ -1,9 +1,8 @@
-package Codigo;
+package com.grafos.tp1.tp;
 
 import java.lang.Math;
 
 public class Haversine {
-
     /**
      * método estático calcularDistancia que recebe as coordenadas de latitude e
      * longitude de dois pontos e retorna a distância em quilômetros entre esses
