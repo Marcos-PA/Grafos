@@ -86,48 +86,6 @@ public class Grafo {
     }
 
     /**
-     * Metodo responsavel por carregar os dados do grafo de um arquivo de texto.
-     * 
-     * @param nomeArquivo
-     * @return void
-     * @throws IOException
-     */
-    public void carregar(String nomeArquivo) {
-        File arquivo;
-        Vertice vertice;
-        try {
-            arquivo = new File(nomeArquivo);
-            if (!arquivo.exists())
-                return;
-
-            Scanner scanner = new Scanner(arquivo);
-
-            if (!scanner.hasNext()) {
-                scanner.close();
-                return;
-            }
-
-            String idVertices = scanner.nextLine();
-            String[] subIds = idVertices.split(";");
-            for (String id : subIds) {
-                vertice = new Vertice(Integer.parseInt(id));
-                this.vertices.add(Integer.parseInt(id), vertice);
-            }
-            while (scanner.hasNextLine()) {
-                String linha = scanner.nextLine();
-                String[] subString = linha.split(";");
-                vertice = vertices.find(Integer.parseInt(subString[0]));
-                if (vertice != null)
-                    vertice.addAresta(Integer.parseInt(subString[1]), Integer.parseInt(subString[2]));
-            }
-
-            scanner.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Metodo responsavel por salvar os dados do grafo em um arquivo de texto.
      * 
      * @param nomeArquivo
