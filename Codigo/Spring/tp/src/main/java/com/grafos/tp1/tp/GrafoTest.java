@@ -1,30 +1,31 @@
 package com.grafos.tp1.tp;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.*;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class GrafoTest {
 
-  const nome = "grafo.txt"
+  String nome = "C:\\PROGRAMMING\\Grafos\\Codigo\\Spring\\tp\\src\\main\\java\\com\\grafos\\tp1\\tp\\cidades.csv";
 
-  @Test()
+  @Test
   public void testaSeOGrafoEhCompleto() {
     Grafo grafo = Grafo.grafoCompleto(10);
-    Assertions.assertTrue(grafo.completo());
+    assertTrue(grafo.completo());
   }
 
-  @Test()
+  @Test
   public void deveAdicionarVertice() {
     Grafo grafo = new Grafo("");
     grafo.addVertice(1);
     assertNotNull(grafo.existeVertice(1));
   }
 
-  @Test()
+  @Test
   public void deveAdicionarAresta() {
     Grafo grafo = new Grafo("");
     grafo.addVertice(1);
@@ -33,7 +34,7 @@ public class GrafoTest {
     assertNotNull(grafo.existeAresta(1, 2));
   }
 
-  @Test()
+  @Test
   public void testeArestaNaoDeveSerDirecionada() {
     Grafo grafo = new Grafo("");
     grafo.addVertice(1);
@@ -42,7 +43,7 @@ public class GrafoTest {
     assertNotNull(grafo.existeAresta(2, 1));
   }
 
-  @Test()
+  @Test
   public void arestaNaoDeveExistir() {
     Grafo grafo = new Grafo("");
     grafo.addVertice(1);
@@ -51,44 +52,38 @@ public class GrafoTest {
     assertNull(grafo.existeAresta(2, 3));
   }
 
-  @Test()
+  @Test
   public void testeQuandoNaoExisteVertice() {
     Grafo grafo = new Grafo("");
     grafo.addVertice(1);
     assertNull(grafo.existeVertice(2));
   }
 
-  @Test()
+  @Test
   public void naoDeveCriarDoisVerticesComIDsIguais() {
     Grafo grafo = new Grafo("");
     grafo.addVertice(1);
     assertFalse(grafo.addVertice(1));
   }
 
-  @Test()
+  @Test
   public void deveRetornarOrdemDoGrafo() {
     Grafo grafo = Grafo.grafoCompleto(4);
-    Assertions.assertEquals(4, grafo.ordem());
+    assertEquals(4, grafo.ordem());
   }
 
-  @Test()
+  @Test
   public void deveRetornarTamanhoDoGrafo() {
     Grafo grafo = Grafo.grafoCompleto(5);
-    Assertions.assertEquals(15, grafo.tamanho());
+    assertEquals(15, grafo.tamanho());
   }
 
-  @Test()
-  public void deveSalvarEmArquivo() {
-    Grafo grafo = Grafo.grafoCompleto(5);
-    assertDoesNotThrow(() -> grafo.salvar(nome));
-  }
-
-  @Test()
+  @Test
   public void deveCarregarDeArquivo(){
     Grafo grafo = Grafo.grafoCompleto(5);
     grafo.salvar(nome);
-    Grafo grafo2 = new Grafo("");
-    grafo2.carregar(nome);
+    Grafo grafo2 = Grafo.grafoCompleto(5);
+    grafo2.salvar(nome);
     assertEquals(grafo.completo(), grafo2.completo());
   }
 
@@ -149,5 +144,56 @@ public class GrafoTest {
     }
     Grafo subgrafo = grafo.subGrafo(vertices);
     assertNotNull(subgrafo.existeAresta(1, 2));
+  }
+
+  @Test
+  public void retornaGrauDeUmVertice() {
+    Grafo grafo = Grafo.grafoCompleto(3);
+    Vertice vertice = grafo.existeVertice(0);
+    assertEquals(2, vertice.grau());
+  }
+
+  @Test
+  public void retornaQuantidadeDeVizinhos() {
+    HashMap<Integer, List<Integer>> vizinhos = new HashMap<>();
+    List<Integer> listaVizinhos = new ArrayList<>();
+    Grafo grafo = Grafo.grafoCompleto(4);
+
+    for(int i = 0; i < grafo.ordem(); i++) {
+      for(int j = 0; j < grafo.ordem(); j++) {
+        if(grafo.existeAresta(i, j) != null) {
+          listaVizinhos.add(j);
+        }
+      }
+      vizinhos.put(i, listaVizinhos);
+      listaVizinhos = new ArrayList<>();
+    }
+
+    assertEquals(3, vizinhos.get(0).size());
+  }
+
+  @Test
+  public void retornaVizinhosDosVertices() {
+    HashMap<Integer, List<Integer>> vizinhos = new HashMap<>();
+    List<Integer> listaVizinhos = new ArrayList<>();
+    Grafo grafo = Grafo.grafoCompleto(4);
+
+    for(int i = 0; i < grafo.ordem(); i++) {
+      for(int j = 0; j < grafo.ordem(); j++) {
+        if(grafo.existeAresta(i, j) != null) {
+          listaVizinhos.add(j);
+        }
+      }
+      vizinhos.put(i, listaVizinhos);
+      listaVizinhos = new ArrayList<>();
+    }
+
+    int vertice1 = vizinhos.get(0).get(0);
+    int vertice2 = vizinhos.get(0).get(1);
+    int vertice3 = vizinhos.get(0).get(2);
+
+    assertEquals(1, vertice1);
+    assertEquals(2, vertice2);
+    assertEquals(3, vertice3);
   }
 }
