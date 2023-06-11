@@ -4,7 +4,8 @@ import { Box } from '@mui/material';
 import {Button, Divider, Grid, Typography} from '@mui/material'
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-import { FaSlidersH, FaInfo } from 'react-icons/fa'
+import { FaSlidersH, FaInfo } from 'react-icons/fa';
+import { UUID, randomUUID } from 'crypto';
 const VisNetwork = dynamic(() => import('react-vis-network-graph'), { ssr: false });
 
 interface nodeGraph {
@@ -116,21 +117,73 @@ export default function Home() {
   }
   
   useEffect(() => {
-    setGraph({
-      nodes: [
-        { id: 1, label: "Brasil", title: "População: 2000000", image:"https://t.ctcdn.com.br/JgnBJ9FG-tayP1V7Id8MPVcQW7w=/512x288/smart/filters:format(webp)/i659457.jpeg", shape: "circularImage" },
-        { id: 3, label: "Brasil", title: "node 3 tootip text", image:"https://t.ctcdn.com.br/JgnBJ9FG-tayP1V7Id8MPVcQW7w=/512x288/smart/filters:format(webp)/i659457.jpeg", shape: "circularImage" },
-        { id: 2, label: "Brasil", title: "node 2 tootip text", image:"https://t.ctcdn.com.br/JgnBJ9FG-tayP1V7Id8MPVcQW7w=/512x288/smart/filters:format(webp)/i659457.jpeg", shape: "circularImage" },
-        { id: 4, label: "Brasil", title: "node 4 tootip text", image:"https://t.ctcdn.com.br/JgnBJ9FG-tayP1V7Id8MPVcQW7w=/512x288/smart/filters:format(webp)/i659457.jpeg", shape: "circularImage" },
-        { id: 5, label: "Brasil", title: "node 5 tootip text", image:"https://t.ctcdn.com.br/JgnBJ9FG-tayP1V7Id8MPVcQW7w=/512x288/smart/filters:format(webp)/i659457.jpeg", shape: "circularImage" }
-      ],
-      edges: [
-        { from: 1, to: 2 },
-        { from: 1, to: 3 },
-        { from: 2, to: 4 },
-        { from: 2, to: 5 }
-      ]   
-    })
+    fetch('http://localhost:8080/get-grafo').then(res => res.json().then(
+      grafo => {
+        let nodes = [];
+        let edges = [];
+        let maxPop = grafo.vertices.reduce((pV, cV) => cV.cidade.populacao > pV ? cV.cidade.populacao : pV, 0);
+        
+        nodes = grafo.vertices.map(v => {
+          return {
+            id: v.cidade.id,
+            label: v.cidade.nome,
+            title: `População: ${v.cidade.populacao}`,
+            shape: "circular",
+            size: Math.max(1, v.cidade.populacao/maxPop * 25),
+            y: -v.cidade.latitude * 1000,
+            x: v.cidade.longitude * 1000,
+            fixed: true
+          };
+        });
+        
+        edges = grafo.arestas.map(a => {
+          return {
+            from: a.origem,
+            to: a.destino,
+            label: a.peso
+          }
+        });
+        console.log({nodes, edges});
+
+        setGraph({
+          nodes, edges
+        });
+
+        // fetch('http://localhost:8080/get-agm').then(res => res.json().then(grafoAgm => {
+        //   console.log(grafoAgm);
+        //   let nodesAgm = [];
+        //   let edgesAgm = [];
+        //   let maxPop = grafoAgm.vertices.reduce((pV, cV) => cV.cidade.populacao > pV ? cV.cidade.populacao : pV, 0);
+          
+        //   nodesAgm = grafoAgm.vertices.map(v => {
+        //     console.log(v.cidade.populacao/maxPop * 25);
+        //     return {
+        //       id: v.cidade.id,
+        //       label: v.cidade.nome,
+        //       title: `População: ${v.cidade.populacao}`,
+        //       shape: "square",
+        //       size: Math.max(1, v.cidade.populacao/maxPop * 25),
+        //       y: -v.cidade.latitude * 1000,
+        //       x: v.cidade.longitude * 1000,
+        //       fixed: true
+        //     };
+        //   });
+        //   edgesAgm = grafoAgm.arestas.map(a => {
+        //     return {
+        //       from: a.origem,
+        //       to: a.destino,
+        //       label: a.peso,
+        //       color: '#f00'
+        //     }
+        //   });
+        //   setGraph({
+        //     nodes: nodesAgm, edges: edgesAgm
+        //   });
+
+          
+        // }));
+      }
+    ));
   }, []);
 
   return (
