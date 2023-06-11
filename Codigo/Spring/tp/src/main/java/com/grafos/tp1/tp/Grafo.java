@@ -366,27 +366,33 @@ public class Grafo {
 
     public Grafo arvoreGeradoraMinima(Integer idRaiz) {
         Grafo arvore = new Grafo("Árvore Geradora Mínima de " + this.nome);
+        GrafoController.mapIntegerToAGM.put(idRaiz, null);
         
         for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])){
             arvore.addVertice(vertice.getId());
         }
 
-        // Vertice raiz = this.existeVertice(idRaiz);
+        Vertice raiz = this.existeVertice(idRaiz);
         List<Integer> listSelecionados = new ArrayList<>();
         listSelecionados.add(idRaiz);
 
         List<ArestaWrapper> arestaAgm = new ArrayList<>();
-        List<ArestaWrapper> listArestasGrafo = this.getArestas();
+        List<ArestaWrapper> listArestas = new ArrayList<>();
+        listArestas.addAll(raiz.getArestasWrapper());
 
         ArestaWrapper minArestaAux;
-        Double minPeso = Double.MAX_VALUE;
+        Double minPeso;
         while(listSelecionados.size() < this.getVertices().size()){
-            
+            // System.out.println(listSelecionados.size());
             minArestaAux = null;
             minPeso = Double.MAX_VALUE;
             Integer i = 0, minArestaIdx = 0;
-            for(ArestaWrapper aresta:listArestasGrafo){
-                if(listSelecionados.contains(aresta.origem) && !listSelecionados.contains(aresta.destino) && aresta.peso < minPeso){
+            Boolean origemPertence, destinoPertence;
+            for(ArestaWrapper aresta:listArestas){
+                origemPertence = listSelecionados.contains(aresta.origem);
+                destinoPertence = listSelecionados.contains(aresta.destino);
+                //System.out.println(listArestas.size());
+                if(origemPertence && !destinoPertence && aresta.peso < minPeso){
                     minArestaAux = aresta;
                     minPeso = aresta.peso;
                     minArestaIdx = i;
@@ -396,8 +402,9 @@ public class Grafo {
             if(minArestaAux == null) break;
             else {
                 listSelecionados.add(minArestaAux.destino);
+                listArestas.addAll(this.existeVertice(minArestaAux.destino).getArestasWrapper());
                 arestaAgm.add(minArestaAux);
-                listArestasGrafo.remove(minArestaIdx);
+                // 
             }
         }
 
@@ -405,6 +412,7 @@ public class Grafo {
             arvore.addAresta(aresta.origem, aresta.destino, aresta.peso);
         }
 
+        GrafoController.mapIntegerToAGM.put(idRaiz, null);
         return arvore;
     }
 

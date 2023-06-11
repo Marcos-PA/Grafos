@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { FaSlidersH, FaInfo } from 'react-icons/fa';
 import { UUID, randomUUID } from 'crypto';
-const VisNetwork = dynamic(() => import('react-vis-network-graph'), { ssr: false });
+const VisNetwork = dynamic(() => import ('react-vis-network-graph'), { ssr: false });
 
 interface nodeGraph {
   nodes?: {
@@ -108,82 +108,97 @@ const options = {
   height: "700px"
 };
 
+let oldArestas, oldVertices;
+
 export default function Home() {
-  const [graph, setGraph] = useState<nodeGraph>({nodes:[],edges:[]});
+  const [graph, setGraph] = useState<nodeGraph>({nodes:[], edges:[]});
   let networkGrafo;
-
-  let carregarGrafo = (dados: nodeGraph) => {
-    networkGrafo?.setData(dados);
-  }
+  const dataFetchedRef = useRef(false);
   
-  useEffect(() => {
-    fetch('http://localhost:8080/get-grafo').then(res => res.json().then(
-      grafo => {
-        let nodes = [];
-        let edges = [];
-        let maxPop = grafo.vertices.reduce((pV, cV) => cV.cidade.populacao > pV ? cV.cidade.populacao : pV, 0);
-        
-        nodes = grafo.vertices.map(v => {
-          return {
-            id: v.cidade.id,
-            label: v.cidade.nome,
-            title: `População: ${v.cidade.populacao}`,
-            shape: "circular",
-            size: Math.max(1, v.cidade.populacao/maxPop * 25),
-            y: -v.cidade.latitude * 1000,
-            x: v.cidade.longitude * 1000,
-            fixed: true
-          };
-        });
-        
-        edges = grafo.arestas.map(a => {
-          return {
-            from: a.origem,
-            to: a.destino,
-            label: a.peso
+  const buscarAgm = () => {
+    fetch('http://localhost:8080/get-agm')
+    .then(res => res.json()
+      .then(
+        grafo => {
+          let nodes = [];
+          let edges = [];
+          
+          nodes = grafo.vertices.map(v => {
+            return {
+              id: v.cidade.id,
+              label: v.cidade.nome,
+              title: `População: ${v.cidade.populacao}`,
+              shape: "circular",
+              y: -v.cidade.latitude * 1000,
+              x: v.cidade.longitude * 1000,
+              fixed: true
+            };
+          });
+          
+          edges = grafo.arestas.map(a => {
+            return {
+              id: a.origem + "-" + a.destino,
+              from: a.origem,
+              to: a.destino,
+              label: a.peso,
+              color: '#f00'
+            }
+          });
+
+          console.log(nodes, edges);
+          // setGraph({...graph, nodes: nodes, edges: edges});
+          networkGrafo.setData({nodes: nodes, edges: edges});
+          dataFetchedRef.current = false;
+        }
+      )  
+    );
+  };
+
+  const buscarGrafo = async () => {
+    fetch('http://localhost:8080/get-grafo')
+    .then(res => res.json()
+      .then(
+        grafo => {
+          let nodes = [];
+          let edges = [];
+
+          nodes = grafo.vertices.map(v => {
+            return {
+              id: v.cidade.id,
+              label: v.cidade.nome,
+              title: `População: ${v.cidade.populacao}`,
+              shape: "circular",
+              y: -v.cidade.latitude * 1000,
+              x: v.cidade.longitude * 1000,
+              fixed: true
+            };
+          });
+          
+          // setGraph({...graph, nodes: nodes});
+          
+          edges = grafo.arestas.map(a => {
+            return {
+              id: a.origem + "-" + a.destino,
+              from: a.origem,
+              to: a.destino,
+              label: a.peso
+            }
+          });
+
+          let graphData = {nodes: nodes, edges: edges};
+          if(networkGrafo != undefined){
+            networkGrafo.setData(graphData);
+          }else{
+            setGraph(graphData);          
           }
-        });
-        console.log({nodes, edges});
+          dataFetchedRef.current = false;
+        }
+      )  
+    );
+  }
 
-        setGraph({
-          nodes, edges
-        });
-
-        // fetch('http://localhost:8080/get-agm').then(res => res.json().then(grafoAgm => {
-        //   console.log(grafoAgm);
-        //   let nodesAgm = [];
-        //   let edgesAgm = [];
-        //   let maxPop = grafoAgm.vertices.reduce((pV, cV) => cV.cidade.populacao > pV ? cV.cidade.populacao : pV, 0);
-          
-        //   nodesAgm = grafoAgm.vertices.map(v => {
-        //     console.log(v.cidade.populacao/maxPop * 25);
-        //     return {
-        //       id: v.cidade.id,
-        //       label: v.cidade.nome,
-        //       title: `População: ${v.cidade.populacao}`,
-        //       shape: "square",
-        //       size: Math.max(1, v.cidade.populacao/maxPop * 25),
-        //       y: -v.cidade.latitude * 1000,
-        //       x: v.cidade.longitude * 1000,
-        //       fixed: true
-        //     };
-        //   });
-        //   edgesAgm = grafoAgm.arestas.map(a => {
-        //     return {
-        //       from: a.origem,
-        //       to: a.destino,
-        //       label: a.peso,
-        //       color: '#f00'
-        //     }
-        //   });
-        //   setGraph({
-        //     nodes: nodesAgm, edges: edgesAgm
-        //   });
-
-          
-        // }));
-      }
-    ));
+  useEffect(() => {
+    buscarGrafo();
   }, []);
 
   return (
@@ -193,18 +208,18 @@ export default function Home() {
         <Divider color='white'/>
         <Grid container spacing={3}>
           <Grid item md={6}>
-            <Button color='info' variant='outlined' sx={{my:2}} startIcon={<FaSlidersH/>} fullWidth>Manipular Grafo</Button>
+            <Button color='info' onClick={buscarAgm} variant='outlined' sx={{my:2}} startIcon={<FaSlidersH/>} fullWidth>Manipular Grafo</Button>
           </Grid>
           <Grid item md={6}>
-            <Button color='warning' variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
+            <Button color='warning' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
           </Grid>
         </Grid>
         <Box border={2}>
-          <VisNetwork    
+          <VisNetwork  
             graph={graph}
             options={options}
-            getNetwork={network => {
-              networkGrafo =network
+            getNetwork = {network => {
+              networkGrafo = network
             }}
           />
         </Box>

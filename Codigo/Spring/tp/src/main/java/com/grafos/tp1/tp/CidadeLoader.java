@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CidadeLoader {
+    private static final int LIMITE_PROXIMOS = 4;
+
     @Bean
     CommandLineRunner loadCidades(){
         return args -> {
@@ -22,7 +24,7 @@ public class CidadeLoader {
 
             Grafo grafo = new Grafo("Cidades");
 
-            LeitorCsv csv = new LeitorCsv("src/main/java/com/grafos/tp1/tp/cidades.csv");
+            LeitorCsv csv = new LeitorCsv("src/main/java/com/grafos/tp1/tp/cidades2903.csv");
             Map<Integer, Map<Integer, List<Cidade>>> mapLatToMapLongToCidade = new HashMap<>();
 
             Cidade cidadeAux;
@@ -66,7 +68,7 @@ public class CidadeLoader {
                         // Alterará para 1 na última rodagem devido ao lastRunController++ na condição do while. 
                         lastRunController = 0;
 
-                        while(stackIdCidadesProximas.size() < 4 || lastRunController++ == 0){
+                        while(stackIdCidadesProximas.size() < LIMITE_PROXIMOS || lastRunController++ == 0){
                             for(Integer offsetLat = -offset; offsetLat <= offset; offsetLat += 1){
                                 if(mapLatToMapLongToCidade.get(latKey + offsetLat) == null) continue;
                                 for(Integer offsetLong = -offset; offsetLong <= offset; offsetLong += 1){
@@ -89,7 +91,7 @@ public class CidadeLoader {
 
                                         Integer idxCidadeProx = 0;
                                         for(Integer idCidade : stackIdCidadesProximas){
-                                            if(idxCidadeProx > 4 || mapKeyArestaParaDistancia.get(String.valueOf(cidadeVertice.id) + '-' + String.valueOf(idCidade)) > distanciaAux){
+                                            if(idxCidadeProx > LIMITE_PROXIMOS || mapKeyArestaParaDistancia.get(String.valueOf(cidadeVertice.id) + '-' + String.valueOf(idCidade)) > distanciaAux){
                                                 break;
                                             }
                                             idxCidadeProx++;
@@ -106,7 +108,7 @@ public class CidadeLoader {
                             offset++;
                         }
 
-                        stackIdCidadesProximas.setSize(4);
+                        stackIdCidadesProximas.setSize(LIMITE_PROXIMOS);
                         stackIdCidadesProximas.trimToSize();
 
                         grafo.addVertice(cidadeVertice.id);
