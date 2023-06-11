@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cidade {
+    public static int idIncrement = 0;
 
     public Cidade(Map<String, String> cidadeMap){
         this.nome = cidadeMap.get("city");
@@ -13,8 +14,8 @@ public class Cidade {
         this.pais = cidadeMap.get("country");
         this.isoPais = cidadeMap.get("iso2");
         this.estado = cidadeMap.get("admin_name");
-        this.populacao = Double.parseDouble(cidadeMap.get("population"));
-        this.id = Integer.parseInt(cidadeMap.get("id"));
+        this.populacao = cidadeMap.get("population") != null && !cidadeMap.get("population").equals("") ? Double.parseDouble(cidadeMap.get("population")) : 0;
+        this.id = cidadeMap.get("id") != null ? Integer.parseInt(cidadeMap.get("id")) : idIncrement++;
     }
 
     public String nome;

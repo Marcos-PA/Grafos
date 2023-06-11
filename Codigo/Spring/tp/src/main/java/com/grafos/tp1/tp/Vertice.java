@@ -23,6 +23,9 @@ package com.grafos.tp1.tp;
  * SOFTWARE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Classe Vertice para um grafo */
 public class Vertice {
 
@@ -62,6 +65,21 @@ public class Vertice {
     public ABB<Aresta> getArestas() {
         return this.arestas;
     }
+
+    /**
+     * Retorna a lista de arestas
+     * 
+     * @return
+     */
+    public List<ArestaWrapper> getArestasWrapper() {
+        List<ArestaWrapper> listArestasTotal = new ArrayList<ArestaWrapper>();
+        for(Aresta aresta:this.getArestas().allElements(new Aresta[this.getArestas().size()])){
+            listArestasTotal.add(new ArestaWrapper(aresta.peso(), aresta.destino(), this.getId()));
+        }
+
+        return listArestasTotal;
+    }
+
 
     // *Para este metodo de adição de arestas, precisamos criar um codigo que
     // *calcule a distancia usando as diferenças entre latitudes e longitudes, que
