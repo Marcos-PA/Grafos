@@ -3,10 +3,12 @@ import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /** 
@@ -362,42 +364,45 @@ public class Grafo {
         return visitados;
     }
 
-    public Grafo arvoreGeradoraMinima() {
+    public Grafo arvoreGeradoraMinima(Integer idRaiz) {
         Grafo arvore = new Grafo("Árvore Geradora Mínima de " + this.nome);
-        int[] vertices = new int[this.vertices.size()];
-        int[] pesos = new int[this.vertices.size()];
-        int[] antecessores = new int[this.vertices.size()];
-        int[] visitados = new int[this.vertices.size()];
-        int i = 0;
-
-        for (Vertice vertice : this.vertices.allElements(new Vertice[this.vertices.size()])) {
-            vertices[i] = vertice.getId();
-            pesos[i] = Integer.MAX_VALUE;
-            antecessores[i] = -1;
-            visitados[i] = 0;
-            i++;
+        
+        for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])){
+            arvore.addVertice(vertice.getId());
         }
 
-        pesos[0] = 0;
+        // Vertice raiz = this.existeVertice(idRaiz);
+        List<Integer> listSelecionados = new ArrayList<>();
+        listSelecionados.add(idRaiz);
 
-        for (int j = 0; j < this.vertices.size(); j++) {
-            int u = minimo(vertices, pesos, visitados);
-            visitados[u] = 1;
+        List<ArestaWrapper> arestaAgm = new ArrayList<>();
+        List<ArestaWrapper> listArestasGrafo = this.getArestas();
 
-            if (antecessores[u] != -1) {
-                arvore.addAresta(antecessores[u], u, pesos[u]);
-            }
-
-            Vertice vertice = this.vertices.find(u);
-            if (vertice != null) {
-                for (Aresta aresta : vertice.getArestas().allElements(new Aresta[vertice.getArestas().size()])) {
-                    int v = aresta.destino();
-                    if (visitados[v] == 0 && aresta.peso() < pesos[v]) {
-                        antecessores[v] = u;
-                        pesos[v] = (int) aresta.peso();
-                    }
+        ArestaWrapper minArestaAux;
+        Double minPeso = Double.MAX_VALUE;
+        while(listSelecionados.size() < this.getVertices().size()){
+            
+            minArestaAux = null;
+            minPeso = Double.MAX_VALUE;
+            Integer i = 0, minArestaIdx = 0;
+            for(ArestaWrapper aresta:listArestasGrafo){
+                if(listSelecionados.contains(aresta.origem) && !listSelecionados.contains(aresta.destino) && aresta.peso < minPeso){
+                    minArestaAux = aresta;
+                    minPeso = aresta.peso;
+                    minArestaIdx = i;
                 }
+                i++;
             }
+            if(minArestaAux == null) break;
+            else {
+                listSelecionados.add(minArestaAux.destino);
+                arestaAgm.add(minArestaAux);
+                listArestasGrafo.remove(minArestaIdx);
+            }
+        }
+
+        for(ArestaWrapper aresta:arestaAgm){
+            arvore.addAresta(aresta.origem, aresta.destino, aresta.peso);
         }
 
         return arvore;
@@ -424,6 +429,46 @@ public class Grafo {
         }
 
         return minIndex;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public ABB<Vertice> getVertices() {
+        return vertices;
+    }
+
+    public List<ArestaWrapper> getArestas() {
+        List<ArestaWrapper> listArestasTotal = new ArrayList<ArestaWrapper>();
+        for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])){
+            for(Aresta aresta:vertice.getArestas().allElements(new Aresta[vertice.getArestas().size()])){
+                listArestasTotal.add(new ArestaWrapper(aresta.peso(), aresta.destino(), vertice.getId()));
+            }
+        }
+
+        return listArestasTotal;
+    }
+
+    public static GrafoWrapper getGrafoWrapperFromGrafo(Grafo grafo) {
+        List<VerticeWrapper> listVertices = new ArrayList<>();
+        List<ArestaWrapper> listArestasTotal = new ArrayList<ArestaWrapper>();
+        List<ArestaWrapper> listArestaAux; 
+        List<Cidade> listCidadesVizinhasAux; 
+        
+        for(Vertice vertice:grafo.getVertices().allElements(new Vertice[grafo.getVertices().size()])){
+            listArestaAux = new ArrayList<>();
+            listCidadesVizinhasAux = new ArrayList<>();
+
+            for(Aresta aresta:vertice.getArestas().allElements(new Aresta[vertice.getArestas().size()])){
+                listArestaAux.add(new ArestaWrapper(aresta.peso(), aresta.destino(), vertice.getId()));
+                listCidadesVizinhasAux.add(TpApplication.mapIdCidadeToCidade.get(aresta.destino()));
+            }
+            listArestasTotal.addAll(listArestaAux);
+            listVertices.add(new VerticeWrapper(TpApplication.mapIdCidadeToCidade.get(vertice.getId()), listArestaAux, listCidadesVizinhasAux, listArestaAux.size()));
+        }
+
+        return new GrafoWrapper(listVertices, listArestasTotal);
     }
 
 }

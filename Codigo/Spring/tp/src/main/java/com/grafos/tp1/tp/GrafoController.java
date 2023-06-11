@@ -8,16 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GrafoController {
-    // @GetMapping("/get-grafo")
-    // GrafoWrapper getGrafo(){
-    //     List<VerticeWrapper> listVertices = new ArrayList<>();
-    //     Grafo grafo = TpApplication.grafoTp;
+    @GetMapping("/get-grafo")
+    GrafoWrapper getGrafo(){
+        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp);        
+    }
 
-    //     for(Vertice vertice:grafo.){
-
-    //     }
-
-        
-    //     return new GrafoWrapper();
-    // }
+    @GetMapping("/get-agm")
+    GrafoWrapper getAgm(){
+        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.arvoreGeradoraMinima(1076135049));        
+    }
 }

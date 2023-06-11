@@ -48,6 +48,7 @@ public class CidadeLoader {
 
                 mapLatToMapLongToCidade.put(latKey, mapLongAux);
                 mapIdToCidade.put(cidadeAux.id, cidadeAux);
+                grafo.addVertice(cidadeAux.id);
             }
 
             Integer offset, lastRunController;
