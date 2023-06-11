@@ -1,4 +1,4 @@
-package Codigo;
+package com.grafos.tp1.tp;
 
 import java.io.File;
 import java.io.FileNotFoundException;

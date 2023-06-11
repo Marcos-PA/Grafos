@@ -1,5 +1,4 @@
-package Codigo;
-
+package com.grafos.tp1.tp;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +72,6 @@ public class Grafo {
             this.nome = "Grafo";
         else
             this.nome = nome;
-
         this.vertices = new ABB<>();
     }
 
@@ -205,7 +203,10 @@ public class Grafo {
 
     public Vertice existeVertice(int idVertice) {
         Vertice vertice = this.vertices.find(idVertice);
-        return vertice != null ? vertice : null;
+        if (vertice != null)
+            return vertice;
+        else
+            return null;
     }
 
     /**
@@ -228,7 +229,7 @@ public class Grafo {
         Vertice saida = this.existeVertice(origem);
         Vertice chegada = this.existeVertice(destino);
         if (saida != null && chegada != null) {
-            adicionou = saida.addAresta(destino, peso) && chegada.addAresta(origem, peso);
+            adicionou = (saida.addAresta(destino, peso) && chegada.addAresta(origem, peso));
         }
         return adicionou;
     }
@@ -251,6 +252,7 @@ public class Grafo {
                 return vertice.removeAresta(destino);
             }
         }
+
         return null;
     }
 
@@ -268,6 +270,7 @@ public class Grafo {
                 return vertice.existeAresta(verticeB);
             }
         }
+
         return null;
     }
 
@@ -282,6 +285,7 @@ public class Grafo {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -294,7 +298,6 @@ public class Grafo {
     public Grafo subGrafo(Lista<Integer> vertices) {
         Grafo subgrafo = new Grafo("Subgrafo de " + this.nome);
         Integer[] verticesArray = vertices.allElements(new Integer[vertices.size()]);
-
         for (Integer vertice : verticesArray) {
             subgrafo.addVertice(vertice);
         }
@@ -319,6 +322,7 @@ public class Grafo {
         for (Vertice vertice : this.vertices.allElements(new Vertice[this.vertices.size()])) {
             tamanho += vertice.getArestas().size();
         }
+
         return (tamanho / 2) + this.ordem();
     }
 
@@ -362,6 +366,7 @@ public class Grafo {
                 }
             }
         }
+
         return visitados;
     }
 
@@ -377,6 +382,7 @@ public class Grafo {
         Queue<Integer> fila = new LinkedList<>();
 
         fila.offer(origem);
+
         while (!fila.isEmpty()) {
             int verticeAtual = fila.poll();
 
