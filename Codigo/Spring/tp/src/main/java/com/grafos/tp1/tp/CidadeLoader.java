@@ -88,7 +88,7 @@ public class CidadeLoader {
 
                                         Integer idxCidadeProx = 0;
                                         for(Integer idCidade : stackIdCidadesProximas){
-                                            if(mapKeyArestaParaDistancia.get(String.valueOf(cidadeVertice.id) + '-' + String.valueOf(idCidade)) > distanciaAux){
+                                            if(idxCidadeProx > 4 || mapKeyArestaParaDistancia.get(String.valueOf(cidadeVertice.id) + '-' + String.valueOf(idCidade)) > distanciaAux){
                                                 break;
                                             }
                                             idxCidadeProx++;
@@ -118,6 +118,8 @@ public class CidadeLoader {
             }
             long end = System.nanoTime();
 
+            TpApplication.grafoTp = grafo;
+            TpApplication.mapIdCidadeToCidade = mapIdToCidade;
             System.out.println("Finalizado em " + (end-start)/1000000 + "ms");
         };
     }
