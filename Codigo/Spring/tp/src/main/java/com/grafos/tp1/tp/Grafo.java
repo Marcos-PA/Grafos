@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 /** 
@@ -362,6 +364,61 @@ public class Grafo {
         }
 
         return visitados;
+    }
+
+    public Grafo caminhoMinimo(Integer idRaiz, Integer idDestino) {
+        Grafo arvore = new Grafo("Caminho minimo de " + this.nome + " para " + idDestino);
+        Vertice verticeOrigem = this.existeVertice(idRaiz);
+        
+        Map<Integer, Double> mapDistancia = new HashMap<>();
+        Map<Integer, Integer> mapPai = new HashMap<>();
+        for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])){            
+            mapDistancia.put(vertice.getId(), Double.MAX_VALUE);
+        }
+        mapDistancia.put(idRaiz, 0.0);
+
+        List<ArestaWrapper> listArestas = new ArrayList<>();
+        listArestas.addAll(verticeOrigem.getArestasWrapper());
+
+        Integer minArestaIdx = 0;
+        Double minArestaDistancia = Double.MAX_VALUE;
+        ArestaWrapper minArestaAux;
+        Vertice verticeAux;
+        for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])){
+            if(vertice == verticeOrigem) continue;
+            minArestaIdx = 0;
+            int i = 0;
+            minArestaAux = listArestas.get(0);
+
+            for(ArestaWrapper aresta:this.getArestas()){
+                if(mapDistancia.get(aresta.origem) + aresta.peso < mapDistancia.get(aresta.destino)){
+                    minArestaIdx = i;
+                    minArestaDistancia = mapDistancia.get(aresta.origem) + aresta.peso;
+                    minArestaAux = aresta;
+
+                    verticeAux = this.existeVertice(minArestaAux.destino);
+                    mapDistancia.put(minArestaAux.destino, minArestaDistancia);
+                    mapPai.put(minArestaAux.destino, minArestaAux.origem);
+
+                }
+                i++;
+            }
+        }
+
+        if(mapPai.get(idDestino) != null){
+            for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])) arvore.addVertice(vertice.getId());
+
+            Integer idCidadeAtual = idDestino;
+            while(idCidadeAtual != idRaiz){
+                arvore.addVertice(idCidadeAtual);
+                arvore.addAresta(mapPai.get(idCidadeAtual), idCidadeAtual);
+                idCidadeAtual = mapPai.get(idCidadeAtual);
+            }
+
+            
+        }
+        
+        return arvore;
     }
 
     public Grafo arvoreGeradoraMinima(Integer idRaiz) {
