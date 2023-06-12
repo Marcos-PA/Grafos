@@ -40,7 +40,7 @@ export default function ManipulacaoModal(args){
                         </TabList>
                         <Divider/>
                         <TabPanel value="1">
-                            <VizinhosTab/>
+                            <VizinhosTab networkGrafo={args.network}/>
                         </TabPanel>
                         <TabPanel value="2">
                             <AvgTab networkGrafo={args.network}/>
@@ -52,7 +52,7 @@ export default function ManipulacaoModal(args){
                             <RemoverTab networkGrafo={args.network}/>
                         </TabPanel>
                         <TabPanel value="5">
-                            <BuscaTab/>
+                            <BuscaTab networkGrafo={args.network} cidades={args.cidades}/>
                         </TabPanel>
                     </TabContext>
                 </Box>
