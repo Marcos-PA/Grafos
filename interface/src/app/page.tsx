@@ -175,7 +175,9 @@ export default function Home() {
             <Button color='error' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaTrashRestore/>} fullWidth>Resetar</Button>
           </Grid>
           <Grid item md={4}>
-            <Button color='warning' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
+            <a href="https://github.com/Marcos-PA/Grafos/blob/master/Documentação/Documentacao-Trabalho-Grafos.pdf" target='blank'>
+              <Button color='warning' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
+            </a>
           </Grid>
         </Grid>
         <Box border={2}>
