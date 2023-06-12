@@ -6,6 +6,7 @@ import VizinhosTab from "./tabs/vizinhos";
 import AvgTab from "./tabs/avg";
 import CaminhoMinimoTab from "./tabs/caminhoMinimo";
 import RemoverTab from "./tabs/remover";
+import BuscaTab from "./tabs/busca";
 
 export default function ManipulacaoModal(){
     const [open, setOpen] = useState<boolean>(false);
@@ -35,6 +36,7 @@ export default function ManipulacaoModal(){
                             <Tab label="Arvore Geradora" value="2"/>
                             <Tab label="Caminho Mínimo" value="3"/>
                             <Tab label="Remover" value="4"/>
+                            <Tab label="Busca" value="5"/>
                         </TabList>
                         <Divider/>
                         <TabPanel value="1">
@@ -48,6 +50,9 @@ export default function ManipulacaoModal(){
                         </TabPanel>
                         <TabPanel value="4">
                             <RemoverTab/>
+                        </TabPanel>
+                        <TabPanel value="5">
+                            <BuscaTab/>
                         </TabPanel>
                     </TabContext>
                 </Box>
