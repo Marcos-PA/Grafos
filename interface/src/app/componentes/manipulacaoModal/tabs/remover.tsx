@@ -1,5 +1,5 @@
 import { Button, Grid, TextField } from "@mui/material";
-import { FaTrash } from 'react-icons/fa'
+import { FaTrashAlt } from 'react-icons/fa'
 export default function RemoverTab(){
     return(
         <Grid container spacing={2}>
@@ -10,7 +10,7 @@ export default function RemoverTab(){
                 <TextField id="id-vertice-origem" label="Aresta" variant="standard" color="info" fullWidth/>
             </Grid>
             <Grid item md={12}>
-                <Button color="error" variant="outlined" fullWidth startIcon={<FaTrash/>}>Remover</Button> 
+                <Button color="error" variant="outlined" fullWidth startIcon={<FaTrashAlt/>}>Remover</Button> 
             </Grid>
         </Grid>
     )
