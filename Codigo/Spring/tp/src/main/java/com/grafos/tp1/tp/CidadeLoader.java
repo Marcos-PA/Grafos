@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ public class CidadeLoader {
 
             Grafo grafo = new Grafo("Cidades");
 
-            LeitorCsv csv = new LeitorCsv("src/main/java/com/grafos/tp1/tp/cidades2903.csv");
+            LeitorCsv csv = new LeitorCsv("src/main/java/com/grafos/tp1/tp/cidades116.csv");
             Map<Integer, Map<Integer, List<Cidade>>> mapLatToMapLongToCidade = new HashMap<>();
 
             Cidade cidadeAux;
