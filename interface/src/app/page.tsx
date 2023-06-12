@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { FaSlidersH, FaInfo } from 'react-icons/fa';
 import { UUID, randomUUID } from 'crypto';
+import ManipulacaoModal from './componentes/manipulacaoModal';
 const VisNetwork = dynamic(() => import ('react-vis-network-graph'), { ssr: false });
 
 interface nodeGraph {
@@ -207,10 +208,13 @@ export default function Home() {
         <Typography fontSize={28} sx={{mt:2}}>Virtualização Do Grafo</Typography>
         <Divider color='white'/>
         <Grid container spacing={3}>
-          <Grid item md={6}>
-            <Button color='info' onClick={buscarAgm} variant='outlined' sx={{my:2}} startIcon={<FaSlidersH/>} fullWidth>Manipular Grafo</Button>
+          <Grid item md={4}>
+            <ManipulacaoModal/>
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={4}>
+            <Button color='error' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Resetar</Button>
+          </Grid>
+          <Grid item md={4}>
             <Button color='warning' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
           </Grid>
         </Grid>
