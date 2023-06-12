@@ -73,6 +73,7 @@ export default function VizinhosTab({networkGrafo}){
                         <TableRow>
                             <TableCell># Id</TableCell>
                             <TableCell>Cidade</TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -80,8 +81,8 @@ export default function VizinhosTab({networkGrafo}){
                         <TableRow key={row?.id}>
                             <TableCell align="left">{row.id}</TableCell>
                             <TableCell align="left">{row.nome}</TableCell>
-                            <TableCell align="left">
-                                <Button data-target={row.id} onClick={visualizarNoGrafo}>Teste</Button>
+                            <TableCell align="right">
+                                <Button data-target={row.id} onClick={visualizarNoGrafo}>Ver no mapa</Button>
                             </TableCell>
                         </TableRow>
                     ))}
