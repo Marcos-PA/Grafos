@@ -16,7 +16,10 @@ export default function RootLayout({
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <html lang="en">
+      <html lang="pt-br">
+        <head>
+          <title>Visualização de grafos</title>
+        </head>
           <body>{children}</body>
       </html>
     </ThemeProvider>

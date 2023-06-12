@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import {Button, Divider, Grid, Typography} from '@mui/material'
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-import { FaSlidersH, FaInfo } from 'react-icons/fa';
+import { FaTrashRestore, FaInfo } from 'react-icons/fa';
 import { UUID, randomUUID } from 'crypto';
 import ManipulacaoModal from './componentes/manipulacaoModal';
 const VisNetwork = dynamic(() => import ('react-vis-network-graph'), { ssr: false });
@@ -56,7 +56,6 @@ const options = {
     },
     font: {
       color: '#ffff',
-      background:"black",
       size: 16, // px
       face: 'arial',
       strokeColor: '#ffffff',
@@ -212,7 +211,7 @@ export default function Home() {
             <ManipulacaoModal/>
           </Grid>
           <Grid item md={4}>
-            <Button color='error' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Resetar</Button>
+            <Button color='error' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaTrashRestore/>} fullWidth>Resetar</Button>
           </Grid>
           <Grid item md={4}>
             <Button color='warning' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaInfo/>} fullWidth>Informações</Button>
