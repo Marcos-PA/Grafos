@@ -18,18 +18,23 @@ public class GrafoController {
         return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp);        
     }
 
-    @GetMapping("/get-agm/{id}")
-    GrafoWrapper getAgm(@PathVariable Integer root){
-        if(mapIntegerToAGM.containsKey(root) == false){
-            Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.arvoreGeradoraMinima(root));        
-            return null;
-        }else{
-            return Grafo.getGrafoWrapperFromGrafo(mapIntegerToAGM.get(root));
-        }
+    @GetMapping("/get-agm/{root}")
+    GrafoWrapper getAgm(@PathVariable int root){
+        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.arvoreGeradoraMinima(root));
     }
 
     @GetMapping("/get-agm")
     GrafoWrapper getAgm(){
-        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.arvoreGeradoraMinima(1076135049));        
+        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.arvoreGeradoraMinima(TpApplication.mapIdCidadeToCidade.get(TpApplication.mapIdCidadeToCidade.keySet().toArray()[0]).id));        
+    }
+
+    @GetMapping("/get-caminho-minimo/{root}/{end}")
+    GrafoWrapper getCaminhoMinimo(@PathVariable Integer root, @PathVariable Integer end){
+        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.caminhoMinimo(root, end));        
+    }
+
+    @GetMapping("/get-caminho-minimo/")
+    GrafoWrapper getCaminhoMinimo(){
+        return Grafo.getGrafoWrapperFromGrafo(TpApplication.grafoTp.arvoreGeradoraMinima(TpApplication.mapIdCidadeToCidade.get(TpApplication.mapIdCidadeToCidade.keySet().toArray()[0]).id));        
     }
 }

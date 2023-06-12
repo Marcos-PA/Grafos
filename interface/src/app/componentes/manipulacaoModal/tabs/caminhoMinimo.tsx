@@ -1,5 +1,5 @@
 import { Button, Grid, TextField } from "@mui/material";
-export default function CaminhoMinimoTab(){
+export default function CaminhoMinimoTab({networkGrafo}){
     return(
         <Grid container spacing={2}>
             <Grid item md={6}>

@@ -115,45 +115,6 @@ export default function Home() {
   let networkGrafo;
   const dataFetchedRef = useRef(false);
   
-  const buscarAgm = () => {
-    fetch('http://localhost:8080/get-agm')
-    .then(res => res.json()
-      .then(
-        grafo => {
-          let nodes = [];
-          let edges = [];
-          
-          nodes = grafo.vertices.map(v => {
-            return {
-              id: v.cidade.id,
-              label: v.cidade.nome,
-              title: `População: ${v.cidade.populacao}`,
-              shape: "circular",
-              y: -v.cidade.latitude * 1000,
-              x: v.cidade.longitude * 1000,
-              fixed: true
-            };
-          });
-          
-          edges = grafo.arestas.map(a => {
-            return {
-              id: a.origem + "-" + a.destino,
-              from: a.origem,
-              to: a.destino,
-              label: a.peso,
-              color: '#f00'
-            }
-          });
-
-          console.log(nodes, edges);
-          // setGraph({...graph, nodes: nodes, edges: edges});
-          networkGrafo.setData({nodes: nodes, edges: edges});
-          dataFetchedRef.current = false;
-        }
-      )  
-    );
-  };
-
   const buscarGrafo = async () => {
     fetch('http://localhost:8080/get-grafo')
     .then(res => res.json()
@@ -208,7 +169,7 @@ export default function Home() {
         <Divider color='white'/>
         <Grid container spacing={3}>
           <Grid item md={4}>
-            <ManipulacaoModal/>
+            <ManipulacaoModal network={networkGrafo}/>
           </Grid>
           <Grid item md={4}>
             <Button color='error' onClick={buscarGrafo} variant='outlined' sx={{my:2}} startIcon={<FaTrashRestore/>} fullWidth>Resetar</Button>
