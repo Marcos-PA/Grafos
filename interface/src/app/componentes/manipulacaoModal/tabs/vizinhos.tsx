@@ -1,7 +1,7 @@
 import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function VizinhosTab(){
+export default function VizinhosTab({networkGrafo}){
     const [rows, setRows] = useState([]);
     return(
         <Grid container spacing={2} >

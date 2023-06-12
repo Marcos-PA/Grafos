@@ -1,4 +1,4 @@
-export default function RemoverTab(){
+export default function RemoverTab({networkGrafo}){
     return(<>
     </>)
 }
