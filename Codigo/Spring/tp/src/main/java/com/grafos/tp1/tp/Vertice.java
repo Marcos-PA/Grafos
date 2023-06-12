@@ -148,4 +148,15 @@ public class Vertice {
     public boolean visitado() {
         return this.visitado;
     }
+
+    public VerticeWrapper toWrapper() {
+        List<ArestaWrapper> listArestaAux = new ArrayList<>(); 
+        List<Cidade> listCidadesVizinhasAux = new ArrayList<>();
+        for(Aresta aresta:this.getArestas().allElements(new Aresta[this.getArestas().size()])){
+            listArestaAux.add(new ArestaWrapper(aresta.peso(), aresta.destino(), this.getId()));
+            listCidadesVizinhasAux.add(TpApplication.mapIdCidadeToCidade.get(aresta.destino()));
+        }
+
+        return new VerticeWrapper(TpApplication.mapIdCidadeToCidade.get(this.getId()), listArestaAux, listCidadesVizinhasAux, listArestaAux.size());
+    }
 }

@@ -43,6 +43,7 @@ import java.util.Queue;
 public class Grafo {
     public final String nome;
     private ABB<Vertice> vertices;
+    private Double somaArvoreGeradoraMinima;
 
     /**
      * Retorna um grafo completo de ordem n, com todos os vértices conectados entre
@@ -391,7 +392,7 @@ public class Grafo {
             minArestaAux = listArestas.get(0);
 
             for(ArestaWrapper aresta:this.getArestas()){
-                if(mapDistancia.get(aresta.origem) + aresta.peso < mapDistancia.get(aresta.destino)){
+                if(mapDistancia.get(aresta.origem) + aresta.peso <= mapDistancia.get(aresta.destino)){
                     minArestaIdx = i;
                     minArestaDistancia = mapDistancia.get(aresta.origem) + aresta.peso;
                     minArestaAux = aresta;
@@ -409,8 +410,10 @@ public class Grafo {
             for(Vertice vertice:this.getVertices().allElements(new Vertice[this.getVertices().size()])) arvore.addVertice(vertice.getId());
 
             Integer idCidadeAtual = idDestino;
-            while(idCidadeAtual != idRaiz){
-                arvore.addVertice(idCidadeAtual);
+            while(!idCidadeAtual.equals(idRaiz)){
+                if(mapPai.get(idCidadeAtual) == null){
+                    break;
+                }
                 arvore.addAresta(mapPai.get(idCidadeAtual), idCidadeAtual);
                 idCidadeAtual = mapPai.get(idCidadeAtual);
             }
@@ -439,6 +442,7 @@ public class Grafo {
 
         ArestaWrapper minArestaAux;
         Double minPeso;
+        this.somaArvoreGeradoraMinima = 0.0;
         while(listSelecionados.size() < this.getVertices().size()){
             // System.out.println(listSelecionados.size());
             minArestaAux = null;
@@ -461,6 +465,7 @@ public class Grafo {
                 listSelecionados.add(minArestaAux.destino);
                 listArestas.addAll(this.existeVertice(minArestaAux.destino).getArestasWrapper());
                 arestaAgm.add(minArestaAux);
+                this.somaArvoreGeradoraMinima += minArestaAux.peso;
                 // 
             }
         }
@@ -533,7 +538,7 @@ public class Grafo {
             listVertices.add(new VerticeWrapper(TpApplication.mapIdCidadeToCidade.get(vertice.getId()), listArestaAux, listCidadesVizinhasAux, listArestaAux.size()));
         }
 
-        return new GrafoWrapper(listVertices, listArestasTotal);
+        return new GrafoWrapper(listVertices, listArestasTotal, grafo.somaArvoreGeradoraMinima);
     }
 
 }

@@ -112,7 +112,7 @@ let oldArestas, oldVertices;
 
 export default function Home() {
   const [graph, setGraph] = useState<nodeGraph>({nodes:[], edges:[]});
-  let networkGrafo;
+  const [networkGrafo, setNetworkGrafo] = useState(null);
   const dataFetchedRef = useRef(false);
   
   const buscarGrafo = async () => {
@@ -147,7 +147,7 @@ export default function Home() {
           });
 
           let graphData = {nodes: nodes, edges: edges};
-          if(networkGrafo != undefined){
+          if(networkGrafo != null){
             networkGrafo.setData(graphData);
           }else{
             setGraph(graphData);          
@@ -183,7 +183,7 @@ export default function Home() {
             graph={graph}
             options={options}
             getNetwork = {network => {
-              networkGrafo = network
+              setNetworkGrafo(network);
             }}
           />
         </Box>

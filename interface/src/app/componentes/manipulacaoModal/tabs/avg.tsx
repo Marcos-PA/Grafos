@@ -33,9 +33,8 @@ export default function AvgTab({networkGrafo}){
                 });
 
                 console.log(nodes, edges);
-                // setGraph({...graph, nodes: nodes, edges: edges});
+                console.log(networkGrafo);
                 networkGrafo.setData({nodes: nodes, edges: edges});
-                dataFetchedRef.current = false;
             }
             )  
         );

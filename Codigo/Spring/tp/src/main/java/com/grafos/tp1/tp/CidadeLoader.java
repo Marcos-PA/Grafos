@@ -23,7 +23,7 @@ public class CidadeLoader {
 
             Grafo grafo = new Grafo("Cidades");
 
-            LeitorCsv csv = new LeitorCsv("src/main/java/com/grafos/tp1/tp/cidades116.csv");
+            LeitorCsv csv = new LeitorCsv("src/main/java/com/grafos/tp1/tp/cidades2903.csv");
             Map<Integer, Map<Integer, List<Cidade>>> mapLatToMapLongToCidade = new HashMap<>();
 
             Cidade cidadeAux;

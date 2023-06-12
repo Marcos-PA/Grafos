@@ -8,7 +8,7 @@ import CaminhoMinimoTab from "./tabs/caminhoMinimo";
 import RemoverTab from "./tabs/remover";
 import BuscaTab from "./tabs/busca";
 
-export default function ManipulacaoModal({networkGrafo}){
+export default function ManipulacaoModal(args){
     const [open, setOpen] = useState<boolean>(false);
     const [value, setValue] = useState("1");
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -43,16 +43,16 @@ export default function ManipulacaoModal({networkGrafo}){
                             <VizinhosTab/>
                         </TabPanel>
                         <TabPanel value="2">
-                            <AvgTab networkGrafo={networkGrafo}/>
+                            <AvgTab networkGrafo={args.network}/>
                         </TabPanel>
                         <TabPanel value="3">
-                            <CaminhoMinimoTab networkGrafo={networkGrafo}/>
+                            <CaminhoMinimoTab networkGrafo={args.network}/>
                         </TabPanel>
                         <TabPanel value="4">
-                            <RemoverTab networkGrafo={networkGrafo}/>
+                            <RemoverTab networkGrafo={args.network}/>
                         </TabPanel>
                         <TabPanel value="5">
-                            <BuscaTab networkGrafo={networkGrafo}/>
+                            <BuscaTab/>
                         </TabPanel>
                     </TabContext>
                 </Box>
